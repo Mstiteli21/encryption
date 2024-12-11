@@ -1,0 +1,63 @@
+#include <iostream>
+#include <string>
+#include <ctime>
+#include <windows.h>
+using namespace std;
+void cip(int k, string sent, string *sent1,string *pass,string pas) {
+	int sp = rand() % 10,qw,y=-1;
+	char st, sr;
+	string sent2;
+	*pass = to_string(sp);
+	if (k == 1) { 
+		sr = ' '; 
+	    qw = sent.length();
+		sent2 = sent;
+	}
+	else { sr = pas[0]; 
+	sp = 0 - (sr-'0');
+	sent2 = pas;
+	qw = pas.length(); }
+	for (int i = 0; i < qw; i++) {
+		if (k == 1)st = '0' + rand() % 10;
+		else { 
+			if (!i)i++;
+			st = pas[i]; 
+		}
+		if (sent2[i] != sr) {
+			while (k == 1 && int(st - '0') == sp) {
+				st = '0' + rand() % 10;
+			}
+			if (k - 1)y++;
+			else y = i;
+			*sent1 += char(int(sent[y]) - (sp * int(st-'0')));
+			if (k == 1)*pass += st;
+		}
+		else if (sent2[i] == sr) {
+			if (k == 1)*pass += to_string(sp);
+			else *sent1 += " ";
+		}
+	}
+}
+int main() {
+	setlocale(0, "");
+	srand(time(NULL));
+	string sent, sent1, pass;
+	int k;
+	cout << "Write the text" << endl;
+	getline(cin, sent);
+	cout << "Choose an action" << endl << "1) Encrypt" << endl << "2) Decipher" << endl;
+	cin >> k;
+	while (k != 1 && k != 2) cin >> k;
+	if (k == 1) { 
+		cip(k, sent, &sent1, &pass, pass);
+		system("cls");
+		cout << "Your text: " << sent << endl << "Cipher text: " << sent1 << endl << "Password: " << pass;
+	}
+	else { 
+		cout << "Whrite the password" << endl;
+		cin >>pass;
+		cip(k, sent, &sent1, &pass, pass); 
+		system("cls");
+		cout << "Your text: " << sent << endl << "Decipher text: " << sent1;
+	}
+}
